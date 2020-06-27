@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">ToDoList</string>
+    <string name="search_todo">Search for Todo Items</string>
+    <string name="to_do_text_title">Todo List</string>
+    <string name="add_item">Add Task</string>
+    <string name="new_todo">New Todo Item</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+
+    <string name="err_msg_task_title">Please enter a valid task title</string>
+    <string name="err_msg_task_desc">Please enter a valid task desc</string>
 </resources>

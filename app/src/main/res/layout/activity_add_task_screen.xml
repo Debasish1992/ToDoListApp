@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="AddTaskModel"
+            type="com.debasish.todolist.entity.TaskEntity" />
+
+        <variable
+            name="AddTaskViewModel"
+            type="com.debasish.todolist.viewmodel.AddTaskViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        tools:context=".ui.AddTaskScreen">
+
+        <EditText
+            android:id="@+id/etTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_50"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,'. "
+            android:ellipsize="end"
+            android:hint="@string/title"
+            android:includeFontPadding="true"
+            android:paddingLeft="@dimen/margin_10_dp"
+            android:background="@drawable/et_cutom_bg"
+            android:text="@={AddTaskModel.taskTitle}"
+            android:imeOptions="actionNext"
+            android:inputType="text|textCapSentences"
+            android:maxLength="50"
+            android:singleLine="true" />
+
+        <EditText
+            android:includeFontPadding="true"
+            android:paddingLeft="@dimen/margin_10_dp"
+            android:background="@drawable/et_cutom_bg"
+            android:id="@+id/editTextTextMultiLineDesc"
+            android:layout_width="match_parent"
+            android:layout_height="203dp"
+            android:paddingTop="@dimen/margin_10_dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="85dp"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,'. "
+            android:ems="10"
+            android:text="@={AddTaskModel.taskDesc}"
+            android:gravity="start|top"
+            android:hint="@string/description"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLength="200" />
+
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextTextMultiLineDesc"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/red"
+            android:onClick="@{() -> AddTaskViewModel.cancelTask()}"
+            android:text="@string/cancel"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/buttonDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextTextMultiLineDesc"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="39dp"
+            android:background="@color/md_green_700"
+            android:text="@string/done"
+            android:onClick="@{() -> AddTaskViewModel.addTask(AddTaskModel)}"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+</layout>
