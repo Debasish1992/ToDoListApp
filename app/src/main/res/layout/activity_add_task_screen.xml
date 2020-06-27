@@ -36,18 +36,16 @@
             android:singleLine="true" />
 
         <EditText
-            android:includeFontPadding="true"
-            android:paddingLeft="@dimen/margin_10_dp"
-            android:background="@drawable/et_cutom_bg"
             android:id="@+id/editTextTextMultiLineDesc"
             android:layout_width="match_parent"
             android:layout_height="203dp"
-            android:paddingTop="@dimen/margin_10_dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="85dp"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,'. "
             android:ems="10"
+            android:background="@drawable/et_cutom_bg"
+           android:padding="10dp"
             android:text="@={AddTaskModel.taskDesc}"
             android:gravity="start|top"
             android:hint="@string/description"

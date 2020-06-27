@@ -3,6 +3,9 @@
     <dimen name="size_1_dp">1dp</dimen>
     <dimen name="size_20_dp">20dp</dimen>
 
+    <dimen name="weight_3">3</dimen>
+    <dimen name="weight_1">1</dimen>
+
     <dimen name="margin_5_dp">5dp</dimen>
     <dimen name="margin_10_dp">10dp</dimen>
     <dimen name="margin_15">15dp</dimen>

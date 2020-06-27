@@ -1,21 +1,20 @@
 package com.debasish.todolist.data;
 
 
-import android.util.Log;
-import android.widget.Toast;
-
 import com.debasish.todolist.entity.TaskEntity;
 import com.debasish.todolist.entity.TaskModel;
 import com.debasish.todolist.interfaces.TaskCallbacks;
-import com.debasish.todolist.utils.ShowLogs;
+import com.debasish.todolist.interfaces.TaskListCallbacks;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class RealmManager {
 
     private static RealmManager realmManager = null;
+    final static int TASK_STATUS_COMPLETE = 1;
 
 
     public static RealmManager getInstance() {
@@ -33,29 +32,72 @@ public class RealmManager {
      */
     public static void saveTaskIntoDb(Realm realm, TaskEntity taskEntity,
                                       String taskId, int taskCompleteStatus, TaskCallbacks taskCallbacks){
-        try{
+        try {
             realm.beginTransaction();
             TaskModel taskModel = realm.createObject(TaskModel.class, taskId);
             taskModel.setTaskTitle(taskEntity.getTaskTitle());
             taskModel.setTaskDesc(taskEntity.getTaskDesc());
             taskModel.setTaskCompleteStatus(taskCompleteStatus);
             realm.commitTransaction();
-            getAllTasksFromDb(realm);
             taskCallbacks.onSuccessfulTaskSavedToDb(true, null);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             taskCallbacks.onSuccessfulTaskSavedToDb(false, ex);
         }
     }
 
-    public static void getAllTasksFromDb(Realm realm){
-        try{
+
+    /**
+     * Function responsible for getting all the tasks from local DB
+     *
+     * @param realm
+     * @return
+     */
+    public static void getAllTasksFromDb(Realm realm, TaskListCallbacks taskCallbacks) {
+        RealmResults<TaskModel> getAllData = null;
+        try {
             RealmQuery<TaskModel> taskModels = realm.where(TaskModel.class);
-            RealmResults<TaskModel> getAllData = taskModels.findAll();
-            int getCount = getAllData.size();
-            ShowLogs.displayLog("The Task Count is"+getCount);
-        }catch(Exception ex){
+            getAllData = taskModels.findAll();
+            getAllData = getAllData.sort("taskCompleteStatus", Sort.ASCENDING);
+            taskCallbacks.onSuccessfulDataFetchedFromRealm(true, getAllData);
+        } catch (Exception ex) {
             ex.printStackTrace();
+            taskCallbacks.onSuccessfulDataFetchedFromRealm(false, getAllData);
+        }
+    }
+
+    public static void getAllSearchedTasksFromDb(String searchPhrase, Realm realm, TaskListCallbacks taskCallbacks) {
+        RealmResults<TaskModel> getAllData = null;
+        try {
+            RealmQuery<TaskModel> taskModels = realm.where(TaskModel.class);
+            taskModels.contains("taskTitle", searchPhrase);
+            getAllData = taskModels.findAll();
+            getAllData = getAllData.sort("taskCompleteStatus", Sort.ASCENDING);
+            taskCallbacks.onSuccessfulDataFetchedFromRealm(true, getAllData);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            taskCallbacks.onSuccessfulDataFetchedFromRealm(false, getAllData);
+        }
+    }
+
+    public static void markTaskAsDone(Realm realm, String taskId, TaskListCallbacks taskCallbacks) {
+        TaskModel getTask = null;
+        try {
+            RealmQuery<TaskModel> taskModels = realm.where(TaskModel.class);
+            taskModels.equalTo("taskId", taskId);
+            getTask = taskModels.findFirst();
+
+            if (getTask != null) {
+                realm.beginTransaction();
+                getTask.setTaskCompleteStatus(TASK_STATUS_COMPLETE);
+                realm.commitTransaction();
+                taskCallbacks.onSuccessfullyTaskStatusChanged(true);
+            } else {
+                taskCallbacks.onSuccessfullyTaskStatusChanged(false);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            taskCallbacks.onSuccessfullyTaskStatusChanged(false);
         }
     }
 }
