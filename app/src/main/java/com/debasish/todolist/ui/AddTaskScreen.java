@@ -29,17 +29,21 @@ public class AddTaskScreen extends AppCompatActivity implements TaskUiCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Binding the VIew
         activityAddTaskScreenBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_task_screen);
         taskUiCallback = this;
         initObject();
+
+        // Setting up the View Model and Model
         activityAddTaskScreenBinding.setAddTaskModel(taskEntity);
         activityAddTaskScreenBinding.setAddTaskViewModel(loginViewModel);
-        //setContentView(R.layout.activity_add_task_screen);
 
         ActionBar actionBar = getSupportActionBar(); // or getActionBar();
         Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.new_todo)); // set the top title
         actionBar.setDisplayHomeAsUpEnabled(true);// set the top title
 
+        // Hiding the Keyboard
         KeyBoardUtils.hideKeyboard(this);
     }
 
@@ -55,6 +59,8 @@ public class AddTaskScreen extends AppCompatActivity implements TaskUiCallback {
         }
     }
 
+
+    // Function responsible for initializing all the objects
     private void initObject() {
         taskEntity = new TaskEntity();
         loginViewModel = new AddTaskViewModel(AddTaskScreen.this, taskUiCallback);
@@ -65,6 +71,7 @@ public class AddTaskScreen extends AppCompatActivity implements TaskUiCallback {
     public void refreshUi(boolean status) {
         if(status){
             dismissAddTaskScreen();
+            KeyBoardUtils.hideKeyboard(this);
         }
     }
 

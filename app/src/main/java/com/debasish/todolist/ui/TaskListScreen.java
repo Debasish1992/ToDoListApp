@@ -50,7 +50,6 @@ public class TaskListScreen extends AppCompatActivity implements TaskListUiCallB
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityTaskListBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        activityTaskListBinding.setTaskListViewModel(taskListViewModel);
         taskListUiCallBacks = this;
         taskListCallbacks = this;
         initViews();
@@ -75,6 +74,7 @@ public class TaskListScreen extends AppCompatActivity implements TaskListUiCallB
         taskModel = new TaskModel();
         realm = RealmController.with(this).getRealm();
         taskListViewModel = new TaskListViewModel(TaskListScreen.this, taskListUiCallBacks);
+        activityTaskListBinding.setTaskListViewModel(taskListViewModel);
     }
 
     @Override

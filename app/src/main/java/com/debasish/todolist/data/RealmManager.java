@@ -6,6 +6,7 @@ import com.debasish.todolist.entity.TaskModel;
 import com.debasish.todolist.interfaces.TaskCallbacks;
 import com.debasish.todolist.interfaces.TaskListCallbacks;
 
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -70,7 +71,7 @@ public class RealmManager {
         RealmResults<TaskModel> getAllData = null;
         try {
             RealmQuery<TaskModel> taskModels = realm.where(TaskModel.class);
-            taskModels.contains("taskTitle", searchPhrase);
+            taskModels.contains("taskTitle", searchPhrase, Case.INSENSITIVE);
             getAllData = taskModels.findAll();
             getAllData = getAllData.sort("taskCompleteStatus", Sort.ASCENDING);
             taskCallbacks.onSuccessfulDataFetchedFromRealm(true, getAllData);

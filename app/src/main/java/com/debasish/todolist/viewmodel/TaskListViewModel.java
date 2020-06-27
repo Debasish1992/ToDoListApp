@@ -2,6 +2,7 @@ package com.debasish.todolist.viewmodel;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.ViewModel;
@@ -55,9 +56,12 @@ public class TaskListViewModel extends ViewModel implements TaskListCallbacks {
         RealmManager.markTaskAsDone(realm, taskId, this);
     }
 
+
+    // Getting the Callback from the Data Binding
     public void onTextChanged(CharSequence phrase, int start, int before, int count) {
-        String getValue = taskListUiCallBacks.getSearchedToken();
-        RealmManager.getAllSearchedTasksFromDb(taskListUiCallBacks.getSearchedToken(), realm, taskCallbacks);
+        if(phrase != null){
+            RealmManager.getAllSearchedTasksFromDb(phrase.toString(), realm, taskCallbacks);
+        }
     }
 
     @Override
