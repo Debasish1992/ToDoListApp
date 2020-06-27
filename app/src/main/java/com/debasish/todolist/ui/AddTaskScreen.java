@@ -1,11 +1,11 @@
 package com.debasish.todolist.ui;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-
-import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.debasish.todolist.R;
 import com.debasish.todolist.data.RealmController;
@@ -39,9 +39,10 @@ public class AddTaskScreen extends AppCompatActivity implements TaskUiCallback {
         activityAddTaskScreenBinding.setAddTaskModel(taskEntity);
         activityAddTaskScreenBinding.setAddTaskViewModel(loginViewModel);
 
-        ActionBar actionBar = getSupportActionBar(); // or getActionBar();
-        Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.new_todo)); // set the top title
-        actionBar.setDisplayHomeAsUpEnabled(true);// set the top title
+        // Setting up the ActionBar
+        ActionBar actionBar = getSupportActionBar();
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.new_todo));
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Hiding the Keyboard
         KeyBoardUtils.hideKeyboard(this);
@@ -69,18 +70,25 @@ public class AddTaskScreen extends AppCompatActivity implements TaskUiCallback {
 
     @Override
     public void refreshUi(boolean status) {
-        if(status){
+        if(status) {
             dismissAddTaskScreen();
+            // Dismissing the keyboard after successfully adding the task
             KeyBoardUtils.hideKeyboard(this);
         }
     }
 
+
+    // Dismissing the screen after cancel button is clicked
     @Override
     public void onCancelClicked() {
         dismissAddTaskScreen();
     }
 
-    void dismissAddTaskScreen(){
+
+    /**
+     * Function responsible for dismissing the current screen
+     */
+    void dismissAddTaskScreen() {
         AddTaskScreen.this.finish();
     }
 }

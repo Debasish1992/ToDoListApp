@@ -31,6 +31,12 @@ public class TaskListViewModel extends ViewModel implements TaskListCallbacks {
 
     }
 
+
+    /**
+     * Initializing the View Model and all the Objects
+     * @param taskListScreen Instance of the Task List Activity
+     * @param taskListUiCallBacks CallBack
+     */
     public TaskListViewModel(TaskListScreen taskListScreen,
                              TaskListUiCallBacks taskListUiCallBacks) {
         this.taskListScreenContext = taskListScreen;
@@ -41,18 +47,25 @@ public class TaskListViewModel extends ViewModel implements TaskListCallbacks {
         getAllTasks();
     }
 
+
+    /**
+     * Function responsible for getting all the Task from the local DB
+     */
     public void getAllTasks() {
         RealmManager.getAllTasksFromDb(realm, taskCallbacks);
     }
 
-    public void getSearchedPlaces(){
-        RealmManager.getAllTasksFromDb(realm, taskCallbacks);
-    }
-
+    /**
+     * Making the Task as Done
+     * @param taskId Id Of the Task
+     * @param callBack
+     */
     public void markTaskAsDone(String taskId, RefreshDataInAdapter callBack) {
         callBackRefresh = callBack;
         if (realm == null)
             realm = RealmController.with((Activity) taskListScreenContext).getRealm();
+
+        // Function responsible for marking the task as Done
         RealmManager.markTaskAsDone(realm, taskId, this);
     }
 
@@ -73,10 +86,6 @@ public class TaskListViewModel extends ViewModel implements TaskListCallbacks {
     public void onSuccessfullyTaskStatusChanged(boolean status) {
         if (status) {
             callBackRefresh.refreshData(true);
-          //  Toast.makeText(taskListScreenContext, "Task Successfully Marked as Done", Toast.LENGTH_LONG).show();
-        } /*else {
-            Toast.makeText(taskListScreenContext, "There was an exception.", Toast.LENGTH_LONG).show();
-        }*/
-
+        }
     }
 }

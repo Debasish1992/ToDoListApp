@@ -21,6 +21,7 @@ public class AppConfig extends Application {
 
     }
 
+    // Initializing the Realm Configuration
     private void intiRealm() {
         Realm.init(this);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);

@@ -50,9 +50,8 @@ public class RealmManager {
 
     /**
      * Function responsible for getting all the tasks from local DB
-     *
-     * @param realm
-     * @return
+     * @param realm Realm Instance
+     * @param taskCallbacks Callback
      */
     public static void getAllTasksFromDb(Realm realm, TaskListCallbacks taskCallbacks) {
         RealmResults<TaskModel> getAllData = null;
@@ -67,6 +66,13 @@ public class RealmManager {
         }
     }
 
+
+    /**
+     * Function responsible for fetching all the records from the Db which are searched
+     * @param searchPhrase phrase to search
+     * @param realm realm Instance
+     * @param taskCallbacks CallBack
+     */
     public static void getAllSearchedTasksFromDb(String searchPhrase, Realm realm, TaskListCallbacks taskCallbacks) {
         RealmResults<TaskModel> getAllData = null;
         try {
@@ -81,17 +87,29 @@ public class RealmManager {
         }
     }
 
+
+    /**
+     * Function responsible for marking the Task as Done in the Database
+     * @param realm Realm Instance
+     * @param taskId Id of the Task
+     * @param taskCallbacks Call back
+     */
     public static void markTaskAsDone(Realm realm, String taskId, TaskListCallbacks taskCallbacks) {
         TaskModel getTask = null;
         try {
+
+            // Getting the Matching object from the DB
             RealmQuery<TaskModel> taskModels = realm.where(TaskModel.class);
             taskModels.equalTo("taskId", taskId);
             getTask = taskModels.findFirst();
 
+            // Checking the nullity and Changing the status of the task
             if (getTask != null) {
                 realm.beginTransaction();
                 getTask.setTaskCompleteStatus(TASK_STATUS_COMPLETE);
                 realm.commitTransaction();
+
+                // Sending the CallBack
                 taskCallbacks.onSuccessfullyTaskStatusChanged(true);
             } else {
                 taskCallbacks.onSuccessfullyTaskStatusChanged(false);

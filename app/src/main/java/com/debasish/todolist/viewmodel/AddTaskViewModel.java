@@ -27,7 +27,6 @@ public class AddTaskViewModel extends ViewModel implements TaskCallbacks {
     TaskUiCallback taskUiCallback;
     TaskCallbacks taskCallbacks;
 
-
     /**
      * initializing all the objects and varibales
      * @param addTaskScreen
@@ -45,21 +44,33 @@ public class AddTaskViewModel extends ViewModel implements TaskCallbacks {
 
     /**
      * Function responsible for saving the task into local DB
-     * @param taskEntity
+     * @param taskEntity Entity for Login
      */
     public void addTask(TaskEntity taskEntity){
+
+        // Validating the Task title and Desc
         if (validateTitleAndDesc(taskEntity.getTaskTitle().trim())) {
             if (validateTitleAndDesc(taskEntity.getTaskDesc().trim())) {
+
+                // Generating the Task Id
                 String taskId = UUIDGenerator.randomUUID(4);
+
+                // Saving the task in the Realm DB
                 RealmManager.saveTaskIntoDb(realm, taskEntity, taskId, 0, taskCallbacks);
             } else {
+
+                // Handling the error situation
                 showMessage(addTaskScreen.getString(R.string.err_msg_task_desc));
             }
         } else {
+
+            // Handling the error situation
             showMessage(addTaskScreen.getString(R.string.err_msg_task_title));
         }
     }
 
+
+    // Cancelling the Task screen
     public void cancelTask(){
         taskUiCallback.onCancelClicked();
     }
@@ -97,6 +108,5 @@ public class AddTaskViewModel extends ViewModel implements TaskCallbacks {
         }else{
             showMessage(ex.getLocalizedMessage());
         }
-
     }
 }
